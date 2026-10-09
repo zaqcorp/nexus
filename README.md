@@ -1,0 +1,1 @@
+记得修改下.env里的HOST_UID和HOST_GID
