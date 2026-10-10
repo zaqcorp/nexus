@@ -2,7 +2,7 @@ services:
   nexus:
     image: ${REGISTRY_PREFIX:-}nexus3:3.94.2
     restart: always
-    user: "${HOST_UID}:${HOST_GID}"
+    #user: "${HOST_UID}:${HOST_GID}"
     environment:
       # 兜底：某些 Nexus 版本会忽略 mount 的 vmoptions，用 install4j 环境变量再套一遍确保生效
       # 注意：Nexus 启动脚本硬编码 MaxDirectMemorySize 下限 256m，低于会拒启
@@ -12,7 +12,7 @@ services:
       NEXUS_SECURITY_RANDOMPASSWORD: false
       TZ: Asia/Shanghai
     volumes:
-      - ./data:/nexus-data
+      - nexus_data:/nexus-data
       - ./nexus.vmoptions:/opt/sonatype/nexus/bin/nexus.vmoptions:ro
     # JVM 总承诺 ~1120m (512+256+256+96) + 线程栈/native ~200m ≈ 1320m
     # mem_limit 给 1600m，留 ~280m 应付启动峰值
@@ -20,3 +20,6 @@ services:
     ports:
       - "${NEXUS_HTTP_PORT}:8081"
       - "${NEXUS_DOCKER_PORT}:8085"
+volumes:
+  nexus_data:
+    external: true
