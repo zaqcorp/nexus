@@ -1,6 +1,6 @@
 services:
   nexus:
-    image: sonatype/nexus3:3.94.0
+    image: ${REGISTRY_PREFIX:-}nexus3:3.94.2
     restart: always
     user: "${HOST_UID}:${HOST_GID}"
     environment:
