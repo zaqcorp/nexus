@@ -1,7 +1,10 @@
 services:
   nexus:
     image: ${REGISTRY_PREFIX:-}nexus3:3.94.2
+    container_name: nexus
     restart: always
+    networks:
+      - docker-kit-network
     #user: "${HOST_UID}:${HOST_GID}"
     environment:
       # 兜底：某些 Nexus 版本会忽略 mount 的 vmoptions，用 install4j 环境变量再套一遍确保生效
@@ -22,4 +25,8 @@ services:
       - "${NEXUS_DOCKER_PORT}:8085"
 volumes:
   nexus_data:
+    external: true
+
+networks:
+  docker-kit-network:
     external: true
